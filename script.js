@@ -8,12 +8,7 @@ window.onclick = function (event) {
     if (event.target == modal) modal.style.display = "none";
 }
 
-/* if(!localStorage.getItem('year')) {
-    addBookToLibrary();
-} else {
-    displayBook(this, myLibrary);
-} */
-
+//return book status from input and toggle button
 function readStatus(e) {
     if(e.type =='checkbox'){
         var status = document.getElementById('status').checked;
@@ -27,8 +22,8 @@ function readStatus(e) {
     if(e.type =='click'){
     var toggleStatus= document.querySelector(`button[data-num='${e.target.dataset.num}']`);
         if(toggleStatus.innerHTML=='Read'){
-        toggleStatus.innerHTML='Unread';
-        myLibrary[e.target.dataset.num][status]='unread';
+        toggleStatus.innerHTML='Not read';
+        myLibrary[e.target.dataset.num][status]='Not read';
         } 
     else if(toggleStatus.innerHTML=='Not read'){
         toggleStatus.innerHTML='Read';
@@ -37,6 +32,7 @@ function readStatus(e) {
     }
 }
 
+//constructor function
 function book(title, author, year, pages, status) {
     this.title = title
     this.author = author
@@ -45,19 +41,26 @@ function book(title, author, year, pages, status) {
     this.status = readStatus(status)
 }
 
+//link DOM to prototype 
+//store object in array
 function addBookToLibrary() {
     var title = document.getElementById('title').value;
     var author = document.getElementById('author').value;
     var year = document.getElementById('year').value;
     var pages = document.getElementById('pages').value;
     var status = document.getElementById('status');
+    if(title && author){
     const newBook = new book(title, author, year, pages, status);
     myLibrary[i] = newBook;
     displayBook(this, myLibrary);
     i++;
     modal.style.display = "none";
+    } else{
+        alert('Please enter title and author');
+    }
 }
 
+//create elements to display info 
 function displayBook() {
     const bookList = document.querySelector('#book-list');
     const template = document.createElement('div');
@@ -80,10 +83,10 @@ function displayBook() {
                     if (displayedTitle == 'Author') {
                         item.textContent = ` By ${myLibrary[i][x]}`;
                     }
-                    if (displayedTitle == 'Year') {
+                    if (displayedTitle == 'Year' && myLibrary[i][x]) {
                         item.textContent = ` Year ${myLibrary[i][x]}`;
                     } 
-                    if (displayedTitle == 'Pages') {
+                    if (displayedTitle == 'Pages' && myLibrary[i][x]) {
                         item.textContent = ` ${myLibrary[i][x]} ${displayedTitle} `;
                     }
             }
@@ -107,6 +110,7 @@ function displayBook() {
     removeButton.dataset.num=i;
 }
 
+ // select parent element and remove DOM
 function remove(e){  
     const removeBook= document.querySelector(`button[data-num='${e.target.dataset.num}']`).parentElement;
     removeBook.remove();
