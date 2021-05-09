@@ -5,7 +5,7 @@
     <title> Library App </title>
     <meta charset=utf-8>
     <meta lang="en">
-    <h1>This is a Library</h1>
+    <h1> Virtual Library</h1>
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -13,27 +13,31 @@
     <div id='btn-div'>
         <!-- Trigger/Open New Book Modal Box -->
         <button id='btn'>New Book</button>
+        <button id='clear'>Clear Storage</button>
     </div>
-    <div id='book-list'></div>
+    <div id='container'></div>
     <!-- The Modal -->
     <div id="modalBox" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
                 <h1> Add New Book</h1>
-                <p> Please fill in the details for new book.</p>
+                <p> Please fill in the details for new book. Title & Author are required.</p>
+                <form>
                 <label for="title"><b>Title :</b></label>
-                <input type="text" placeholder="Enter Book Title" id="title" value="Jane Eyre" required>
+                <input type="text" placeholder="Enter Book Title" id="title" required>
                 <label for="author"><b>Author :</b></label>
-                <input type="text" placeholder="Enter Author" name="author" value="Bella Chen" id="author">
+                <input type="text" placeholder="Enter Author" name="author" id="author" required>
                 <label for="year"><b>Year :</b></label>
-                <input type="number" placeholder="Enter Year" name="year" value=1888 id="year">
+                <input type="number" placeholder="Enter Year" name="year" id="year">
                 <label for="pages"><b>No. of pages :</b></label>
-                <input type="number" placeholder="Enter number of pages" name="pages" value=280 id="pages">
+                <input type="number" placeholder="Enter number of pages" name="pages" id="pages">
                 <!-- <p id="statusId"><b>Status :</b></p> -->
                 <input type="checkbox" id="status" name="status">
                 <label for="status">Read</label> 
         <!--     <button id="status" onclick="statusToggle()">Unread</button>   -->
                 <button id='submit'>Submit</button>
+                </form>
+                     
         </div>
     </div>
 

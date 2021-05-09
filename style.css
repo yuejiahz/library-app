@@ -23,7 +23,8 @@ body{
     flex-direction: column;
 }
 
-#btn{
+#btn, #clear{
+    margin:0.5rem;
     width: 14rem;
     padding:0.7rem;
     font-size: 1.3rem;
@@ -35,7 +36,7 @@ body{
     background-color:rgb(255, 255, 143);
 }
 
-#book-list{
+#container{
     position: relative;
     margin-top: 1.8rem;
     width: 80%;
@@ -113,8 +114,9 @@ input,select{
 
 p{
     position:relative;
-    line-height: 8px;
+    line-height: 15px;
     background-color:transparent;
+    margin-bottom:0.3rem 0 0.3rem 0;
 }
 
 .removeBtn,.bookStatusBtn{
