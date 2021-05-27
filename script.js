@@ -1,68 +1,32 @@
-let myLibrary = JSON.parse(localStorage.getItem("books")) || [];
-const modal = document.getElementById('modalBox');
-document.getElementsByClassName('close')[0].addEventListener('click', () => modal.style.display = "none");
-document.getElementById('btn').addEventListener('click', () => modal.style.display = "block");
-document.getElementById('submit').addEventListener('click', addBookToLibrary);
-document.getElementById('clear').addEventListener('click', clear);
-window.addEventListener('load', () => {
-    for (i = 0; i < myLibrary.length; i++) displayBooks(i);
-});
-//close modal box when click outside of box area
-window.onclick = (event) => {
-    if (event.target == modal) modal.style.display = "none";
-}
-
-//return book status from input and toggle button
-function readStatus(e) {
-    if (e.type == 'checkbox') {
-        var status = document.getElementById('status').checked;
-
-        if (status == true) {
-            return 'Read';
-        } else {
-            return 'Unread';
-        }
+class Book {
+    //constructor function
+    constructor(title, author, year, pages, status) {
+        this.title = title
+        this.author = author
+        this.year = year
+        this.pages = pages
+        this.status = status
     }
-    if (e.type == 'click') {
-        var toggleStatus = document.querySelector(`button[data-num='${e.target.dataset.num}']`);
-        if (toggleStatus.innerHTML === 'Read') {
-            toggleStatus.innerHTML = 'Unread';
-            myLibrary[e.target.dataset.num]['status'] = 'Unread';
-        }
-        else if (toggleStatus.innerHTML === 'Unread') {
-
-            toggleStatus.innerHTML = 'Read';
-            myLibrary[e.target.dataset.num]['status'] = 'Read';
-        }
-        window.localStorage.setItem(`books`, JSON.stringify(myLibrary));
-    }
-}
-
-//constructor function
-function Book(title, author, year, pages, status) {
-    this.title = title
-    this.author = author
-    this.year = year
-    this.pages = pages
-    this.status = readStatus(status)
 }
 
 //call prototype function 
 //store object in array
-function addBookToLibrary() {
+function addBookToLibrary(event) {
     var title = document.getElementById('title').value;
     var author = document.getElementById('author').value;
     var year = document.getElementById('year').value;
     var pages = document.getElementById('pages').value;
-    var status = document.getElementById('status');
-    
-    if(title && author){
-    const newBook = new Book(title, author, year, pages, status);
-    myLibrary.push(newBook);
-    window.localStorage.setItem(`books`, JSON.stringify(myLibrary));
-    displayBooks();
-    modal.style.display = "none";
-    form.reset();
+    var checkedStatus = document.getElementById('status').checked;
+    var status = readStatus(checkedStatus);
+    if (title && author) {
+        //call class constructor
+        let newBook = new Book(title, author, year, pages, status);
+
+        myLibrary.push(newBook);
+        window.localStorage.setItem(`books`, JSON.stringify(myLibrary));
+        displayBooks();
+        modal.style.display = "none";
+        form.reset();
     }
 }
 
@@ -105,7 +69,7 @@ function displayBooks(index) {
             bookStatusBtn.className = "bookStatusBtn";
             bookStatusBtn.textContent = `${myLibrary[i][x]}`;
             template.appendChild(bookStatusBtn);
-            bookStatusBtn.addEventListener('click', readStatus);
+            bookStatusBtn.addEventListener('click', toggleBookStatus);
             bookStatusBtn.dataset.num = i;
         }
     }
@@ -117,16 +81,66 @@ function displayBooks(index) {
     removeButton.dataset.num = i;
 }
 
+//return book status from input and toggle button
+const readStatus = (status) => {
+    var status = document.getElementById('status').checked;
+    if (status == true) {
+        return 'Read';
+    } else {
+        return 'Unread';
+    }
+}
+
+const toggleBookStatus = (event) => {
+    if (event.type == 'click') {
+        var toggleStatus = document.querySelector(`button[data-num='${event.target.dataset.num}']`);
+        if (toggleStatus.innerHTML === 'Read') {
+            toggleStatus.innerHTML = 'Unread';
+            myLibrary[event.target.dataset.num]['status'] = 'Unread';
+            return 'Unread';
+        }
+        else if (toggleStatus.innerHTML === 'Unread') {
+
+            toggleStatus.innerHTML = 'Read';
+            myLibrary[event.target.dataset.num]['status'] = 'Read';
+            return 'Read';
+        }
+        window.localStorage.setItem(`books`, JSON.stringify(myLibrary));
+    }
+}
+
 // select parent element and remove DOM
-function remove(e) {
-    const removeBook = document.querySelector(`button[data-num='${e.target.dataset.num}']`).parentElement;
+function remove(event) {
+    const removeBook = document.querySelector(`button[data-num='${event.target.dataset.num}']`).parentElement;
     removeBook.remove();
-    myLibrary.splice(e.target.dataset.num, 1);
+    myLibrary.splice(event.target.dataset.num, 1);
     window.localStorage.setItem(`books`, JSON.stringify(myLibrary));
 }
+
 function clear() {
     window.localStorage.clear();
     myLibrary = [];
     const template = document.querySelectorAll('.template');
     template.forEach(element => element.remove());
+}
+
+//store data in local storage
+let myLibrary = JSON.parse(localStorage.getItem("books")) || [];
+
+const modal = document.getElementById('modalBox');
+//assign event listener to buttons
+document.getElementsByClassName('close')[0].addEventListener('click', () => modal.style.display = "none");
+document.getElementById('btn').addEventListener('click', () => modal.style.display = "block");
+document.getElementById('submit').addEventListener('click', addBookToLibrary);
+document.getElementById('clear').addEventListener('click', clear);
+window.addEventListener('load', () => {
+    for (i = 0; i < myLibrary.length; i++) {
+        displayBooks(i);
+    }
+});
+
+//close modal box when click outside of box area
+window.onclick = (event) => {
+    if (event.target == modal) modal.style.display = "none";
+
 }
