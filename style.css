@@ -87,10 +87,17 @@ label{
     margin-left: 2rem;
 }
 input,select{
+    box-sizing: border-box;
    width: 250px;
    background-color: white;
    line-height: 1.5rem;
    border-radius: 6px;
+}
+input:invalid{
+    box-shadow: 0 0 5px 1px red;
+}
+input:focus:invalid{
+    box-shadow: none;
 }
 #submit{
     display: block;
