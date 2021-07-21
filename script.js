@@ -11,7 +11,7 @@ class Book {
 
 //call prototype function 
 //store object in array
-function addBookToLibrary(event) {
+function addBookToLibrary() {
     var title = document.getElementById('title').value;
     var author = document.getElementById('author').value;
     var year = document.getElementById('year').value;
@@ -32,8 +32,11 @@ function addBookToLibrary(event) {
 
 //create elements to display info 
 function displayBooks(index) {
-    if (typeof index == 'number') i = index;
-    if (!(typeof index == 'number')) i = myLibrary.length - 1;
+    if (typeof index == 'number') {
+        i = index;
+    } else {
+        i = myLibrary.length - 1;
+    }
 
     const container = document.querySelector('#container');
     const template = document.createElement('div');
@@ -84,7 +87,7 @@ function displayBooks(index) {
 //return book status from input and toggle button
 const readStatus = (status) => {
     var status = document.getElementById('status').checked;
-    if (status == true) {
+    if (status) {
         return 'Read';
     } else {
         return 'Unread';
@@ -100,7 +103,6 @@ const toggleBookStatus = (event) => {
             return 'Unread';
         }
         else if (toggleStatus.innerHTML === 'Unread') {
-
             toggleStatus.innerHTML = 'Read';
             myLibrary[event.target.dataset.num]['status'] = 'Read';
             return 'Read';
@@ -124,7 +126,7 @@ function clear() {
     template.forEach(element => element.remove());
 }
 
-//store data in local storage
+//store data from local storage
 let myLibrary = JSON.parse(localStorage.getItem("books")) || [];
 
 const modal = document.getElementById('modalBox');
